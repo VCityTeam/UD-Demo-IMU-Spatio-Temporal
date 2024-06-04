@@ -1,0 +1,9 @@
+.idea/
+node_modules
+dist
+lib
+.vs
+.vscode
+TODO.txt
+ChangelogDiff.txt
+stats.json
