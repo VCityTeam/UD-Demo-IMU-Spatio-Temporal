@@ -12,8 +12,7 @@
     "type": "git",
     "url": "git+https://github.com/VCityTeam/UD-Demo-IMU-Spatio-Temporal.git"
   },
-  "keywords": [
-  ],
+  "keywords": [],
   "author": "IMU/LIRIS",
   "license": "LGPL-2.1-only",
   "bugs": {
@@ -21,6 +20,8 @@
   },
   "homepage": "https://github.com/VCityTeam/UD-Demo-IMU-Spatio-Temporal#readme",
   "dependencies": {
+    "@ud-viz/utils_browser": "file:../UD-Viz/packages/utils_browser",
+    "@ud-viz/extensions_3d_tiles_temporal": "file:../UD-Viz/packages/extensions_3d_tiles_temporal",
     "buffer": "^6.0.3",
     "chart.js": "^4.4.1",
     "cross-env": "7.0.3"
