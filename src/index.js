@@ -153,12 +153,25 @@ loadMultipleJSON([
   const selectDateParabola = document.getElementById('parabola_year');
 
   // CREATE 3DTILES
+  
+  const stsCircle = new STSCircle();
+  const stsVector = new STSVector();
+  const stsHelix = new STSHelix();
+  const stsParabola = new STSParabola();
+
+  const getShapesWithUi = () => {
+    return [
+      {
+        stShape: stsCircle,
+        ui: uiCircle,
+      },
+      { stShape: stsVector, ui: uiVector },
+      { stShape: stsHelix, ui: uiHelix },
+      { stShape: stsParabola, ui: uiParabola },
+    ];
+  };
 
   let versions = [];
-  let stsCircle = null;
-  let stsVector = null;
-  let stsHelix = null;
-  let stsParabola = null;
 
   selectDataset.onchange = () => {
     selectMode.hidden = false;
@@ -221,15 +234,15 @@ loadMultipleJSON([
     Promise.all(promisesTileContentLoaded).then(() => {
       shapeName.hidden = true;
 
-      // STSCircle
-      if (stsCircle != null) {
-        stsCircle.dispose();
-        stsCircle.stLayer = stLayer;
-        uiCircle.hidden = true;
-      } else {
-        stsCircle = new STSCircle(stLayer);
-      }
+      getShapesWithUi().forEach((element) => {
+        if (element.stShape.displayed) {
+          element.stShape.dispose();
+          element.ui.hidden = true;
+        }
+        element.stShape.setSTLayer(stLayer);
+      });
 
+      // STSCircle
       selectDate.innerHTML = '';
       versions.forEach((v) => {
         const date = v.date;
@@ -242,33 +255,7 @@ loadMultipleJSON([
         selectDate.appendChild(optionDate);
       });
 
-      // STSVector
-      if (stsVector != null) {
-        stsVector.dispose();
-        stsVector.stLayer = stLayer;
-        uiVector.hidden = true;
-      } else {
-        stsVector = new STSVector(stLayer);
-      }
-
-      // STSHelix
-      if (stsHelix != null) {
-        stsHelix.dispose();
-        stsHelix.stLayer = stLayer;
-        uiHelix.hidden = true;
-      } else {
-        stsHelix = new STSHelix(stLayer);
-      }
-
       // STSParabola
-      if (stsParabola != null) {
-        stsParabola.dispose();
-        stsParabola.stLayer = stLayer;
-        uiParabola.hidden = true;
-      } else {
-        stsParabola = new STSParabola(stLayer);
-      }
-
       selectDateParabola.innerHTML = '';
       versions.forEach((v) => {
         const date = v.date;
@@ -281,18 +268,6 @@ loadMultipleJSON([
   };
 
   // EVENTS
-
-  const getShapesWithUi = () => {
-    return [
-      {
-        stShape: stsCircle,
-        ui: uiCircle,
-      },
-      { stShape: stsVector, ui: uiVector },
-      { stShape: stsHelix, ui: uiHelix },
-      { stShape: stsParabola, ui: uiParabola },
-    ];
-  };
 
   selectSTShape.onchange = () => {
     shapeName.hidden = false;
