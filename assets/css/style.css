@@ -26,3 +26,11 @@ body {
 .logo {
   max-height: 80px;
 }
+
+#sts_div {
+  position: absolute;
+  display: grid;
+  left: 0%;
+  top: 0%;
+  z-index: 2;
+}

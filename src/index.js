@@ -13,7 +13,7 @@ import {
   STSParabola,
   STSHelix,
   ID as C3DTT_ID,
-  Temporal3DTilesLayerWrapper
+  Temporal3DTilesLayerWrapper,
 } from '@ud-viz/extensions_3d_tiles_temporal';
 
 loadMultipleJSON([
@@ -90,44 +90,15 @@ loadMultipleJSON([
 
   const extensions = new itowns.C3DTExtensions();
   extensions.registerExtension(C3DTT_ID, {
-    [itowns.C3DTilesTypes.batchtable]:
-      C3DTTemporalBatchTable,
-    [itowns.C3DTilesTypes.boundingVolume]:
-      C3DTTemporalBoundingVolume,
-    [itowns.C3DTilesTypes.tileset]:
-      C3DTTemporalTileset,
+    [itowns.C3DTilesTypes.batchtable]: C3DTTemporalBatchTable,
+    [itowns.C3DTilesTypes.boundingVolume]: C3DTTemporalBoundingVolume,
+    [itowns.C3DTilesTypes.tileset]: C3DTTemporalTileset,
   });
 
   // CREATE HTML
-  const ui = document.createElement('div');
-  document.body.appendChild(ui);
-  ui.style = 'position: absolute; display: grid; left: 0%; top: 0%; z-index:10';
+  const ui = document.getElementById('sts_div');
 
-  const selectDataset = document.createElement('select');
-  ui.appendChild(selectDataset);
-  const optionDefaultDataset = document.createElement('option');
-  optionDefaultDataset.innerText = 'Choose a dataset';
-  optionDefaultDataset.selected = true;
-  optionDefaultDataset.disabled = true;
-  optionDefaultDataset.hidden = true;
-  selectDataset.appendChild(optionDefaultDataset);
-  const datasetFakeDataLyon = document.createElement('option');
-  datasetFakeDataLyon.value = 'fakeLyon';
-  datasetFakeDataLyon.innerText = 'Lyon fake data';
-  selectDataset.appendChild(datasetFakeDataLyon);
-  const datasetFakeDataGratteCiel = document.createElement('option');
-  datasetFakeDataGratteCiel.value = 'fakeGratteCiel';
-  datasetFakeDataGratteCiel.innerText = 'Gratte Ciel fake data';
-  selectDataset.appendChild(datasetFakeDataGratteCiel);
-  const datasetLyon = document.createElement('option');
-  datasetLyon.value = 'lyon';
-  datasetLyon.innerText = 'Lyon temporal';
-  selectDataset.appendChild(datasetLyon);
-  const datasetGratteCiel = document.createElement('option');
-  datasetGratteCiel.value = 'gratteCiel';
-  datasetGratteCiel.innerText = 'GratteCiel temporal';
-  selectDataset.appendChild(datasetGratteCiel);
-
+  const selectDataset = document.getElementById('select_dataset');
   const getDataset = () => {
     switch (selectDataset.selectedOptions[0].value) {
       case 'fakeLyon':
@@ -141,15 +112,7 @@ loadMultipleJSON([
     }
   };
 
-  const selectMode = document.createElement('select');
-  selectMode.hidden = true;
-  ui.appendChild(selectMode);
-  const optionDefaultMode = document.createElement('option');
-  optionDefaultMode.innerText = 'Choose a Mode';
-  optionDefaultMode.selected = true;
-  optionDefaultMode.disabled = true;
-  optionDefaultMode.hidden = true;
-  selectMode.appendChild(optionDefaultMode);
+  const selectMode = document.getElementById('select_mode');
 
   for (const mode in STS_DISPLAY_MODE) {
     const optionMode = document.createElement('option');
@@ -158,152 +121,36 @@ loadMultipleJSON([
   }
 
   const getCurrentMode = () => {
-    if (selectMode.selectedOptions[0] != optionDefaultMode)
-      return selectMode.selectedOptions[0].value;
-    return undefined;
+    return selectMode.selectedOptions[0].value;
   };
 
-  const selectSTShape = document.createElement('select');
-  selectSTShape.hidden = true;
-  ui.appendChild(selectSTShape);
-  const optionDefaultShape = document.createElement('option');
-  optionDefaultShape.innerText = 'Choose a Shape';
-  optionDefaultShape.disabled = true;
-  optionDefaultShape.hidden = true;
-  selectSTShape.appendChild(optionDefaultShape);
+  const selectSTShape = document.getElementById('select_shape');
+  const shapeName = document.getElementById('shape_name');
+  const defaultShape = document.getElementById('default_shape');
 
   // CIRCLE HTML
-  const optionCircle = document.createElement('option');
-  optionCircle.value = 'circle';
-  optionCircle.innerText = 'Circle';
-  selectSTShape.appendChild(optionCircle);
-
-  const uiCircle = document.createElement('div');
-  uiCircle.hidden = true;
-  ui.appendChild(uiCircle);
-
-  const radiusParameterLabel = document.createElement('label');
-  radiusParameterLabel.innerText = 'Radius';
-  uiCircle.appendChild(radiusParameterLabel);
-  const radiusParameter = document.createElement('input');
-  radiusParameter.type = 'number';
-  radiusParameter.name = 'Radius';
-  uiCircle.appendChild(radiusParameter);
-
-  const heightParameterLabel = document.createElement('label');
-  heightParameterLabel.innerText = 'Height';
-  uiCircle.appendChild(heightParameterLabel);
-  const heightParameter = document.createElement('input');
-  heightParameter.type = 'number';
-  heightParameter.name = 'Height';
-  uiCircle.appendChild(heightParameter);
-
-  const dateSelectLabel = document.createElement('label');
-  dateSelectLabel.innerText = 'Year';
-  uiCircle.appendChild(dateSelectLabel);
-  const selectDate = document.createElement('select');
-  uiCircle.appendChild(selectDate);
-
-  const updateCheckBoxLabel = document.createElement('label');
-  updateCheckBoxLabel.innerText = 'Freeze rotation';
-  uiCircle.appendChild(updateCheckBoxLabel);
-  const updateCheckBox = document.createElement('input');
-  updateCheckBox.type = 'checkbox';
-  updateCheckBox.name = 'update';
-  uiCircle.appendChild(updateCheckBox);
+  const uiCircle = document.getElementById('circle_div');
+  const radiusParameter = document.getElementById('circle_radius');
+  const heightParameter = document.getElementById('circle_height');
+  const selectDate = document.getElementById('circle_year');
+  const updateCheckBox = document.getElementById('circle_rotation');
 
   // VECTOR HTML
-  const optionVector = document.createElement('option');
-  optionVector.value = 'vector';
-  optionVector.innerText = 'Vector';
-  selectSTShape.appendChild(optionVector);
-
-  const uiVector = document.createElement('div');
-  uiVector.hidden = true;
-  ui.appendChild(uiVector);
-
-  const deltaLabel = document.createElement('label');
-  deltaLabel.innerText = 'Delta';
-  uiVector.appendChild(deltaLabel);
-  const deltaParameter = document.createElement('input');
-  deltaParameter.type = 'number';
-  deltaParameter.name = 'delta';
-  uiVector.appendChild(deltaParameter);
-
-  const alphaLabel = document.createElement('label');
-  alphaLabel.innerText = 'Alpha';
-  uiVector.appendChild(alphaLabel);
-  const alphaParameter = document.createElement('input');
-  alphaParameter.type = 'number';
-  alphaParameter.name = 'alpha';
-  uiVector.appendChild(alphaParameter);
+  const uiVector = document.getElementById('vector_div');
+  const deltaParameter = document.getElementById('vector_delta');
+  const alphaParameter = document.getElementById('vector_alpha');
 
   // HELIX HTML
-  const optionHelix = document.createElement('option');
-  optionHelix.value = 'helix';
-  optionHelix.innerText = 'Helix';
-  selectSTShape.appendChild(optionHelix);
-
-  const uiHelix = document.createElement('div');
-  uiHelix.hidden = true;
-  ui.appendChild(uiHelix);
-
-  const helixDeltaLabel = document.createElement('label');
-  helixDeltaLabel.innerText = 'Delta';
-  uiHelix.appendChild(helixDeltaLabel);
-  const helixDeltaParameter = document.createElement('input');
-  helixDeltaParameter.type = 'number';
-  helixDeltaParameter.name = 'delta';
-  uiHelix.appendChild(helixDeltaParameter);
-
-  const helixRadiuslabel = document.createElement('label');
-  helixRadiuslabel.innerText = 'Radius';
-  uiHelix.appendChild(helixRadiuslabel);
-  const helixRadiusParameter = document.createElement('input');
-  helixRadiusParameter.type = 'number';
-  helixRadiusParameter.name = 'rayon';
-  uiHelix.appendChild(helixRadiusParameter);
+  const uiHelix = document.getElementById('helix_div');
+  const helixDeltaParameter = document.getElementById('helix_delta');
+  const helixRadiusParameter = document.getElementById('helix_radius');
 
   // PARABOLA HTML
-  const optionParabola = document.createElement('option');
-  optionParabola.value = 'parabola';
-  optionParabola.innerText = 'Parabola';
-  selectSTShape.appendChild(optionParabola);
-
-  const uiParabola = document.createElement('div');
-  uiParabola.hidden = true;
-  ui.appendChild(uiParabola);
-
-  const labelDistAxisX = document.createElement('label');
-  labelDistAxisX.innerText = 'Distance on X axis';
-  uiParabola.appendChild(labelDistAxisX);
-
-  const parabolaDistAxisX = document.createElement('input');
-  parabolaDistAxisX.type = 'number';
-  parabolaDistAxisX.name = 'distAxisX';
-  uiParabola.appendChild(parabolaDistAxisX);
-
-  const labelDistAxisY = document.createElement('label');
-  labelDistAxisY.innerText = 'Distance on Y axis';
-  uiParabola.appendChild(labelDistAxisY);
-  const parabolaDistAxisY = document.createElement('input');
-  parabolaDistAxisY.type = 'number';
-  parabolaDistAxisY.name = 'distAxisY';
-  uiParabola.appendChild(parabolaDistAxisY);
-
-  const labelHeight = document.createElement('label');
-  labelHeight.innerText = 'Height';
-  uiParabola.appendChild(labelHeight);
-  const parabolaHeight = document.createElement('input');
-  parabolaHeight.type = 'number';
-  parabolaHeight.name = 'Height';
-  uiParabola.appendChild(parabolaHeight);
-
-  const parabolaDateSelectLabel = document.createElement('label');
-  parabolaDateSelectLabel.innerText = 'Year';
-  uiParabola.appendChild(parabolaDateSelectLabel);
-  const selectDateParabola = document.createElement('select');
-  uiParabola.appendChild(selectDateParabola);
+  const uiParabola = document.getElementById('parabola_div');
+  const parabolaDistAxisX = document.getElementById('parabola_distx');
+  const parabolaDistAxisY = document.getElementById('parabola_disty');
+  const parabolaHeight = document.getElementById('parabola_height');
+  const selectDateParabola = document.getElementById('parabola_year');
 
   // CREATE 3DTILES
 
@@ -315,7 +162,7 @@ loadMultipleJSON([
 
   selectDataset.onchange = () => {
     selectMode.hidden = false;
-    optionDefaultShape.selected = true;
+    defaultShape.selected = true;
     if (versions.length > 0) {
       versions.forEach((v) => {
         view.removeLayer(v.c3DTLayer.id);
@@ -354,9 +201,7 @@ loadMultipleJSON([
         );
         if (isTemporal) {
           temporalsWrappers.push(
-            new Temporal3DTilesLayerWrapper(
-              c3DTilesLayer
-            )
+            new Temporal3DTilesLayerWrapper(c3DTilesLayer)
           );
 
           if (date == Math.min(...datesJSON)) {
@@ -371,13 +216,11 @@ loadMultipleJSON([
       });
     });
 
-    const stLayer = new STLayer(
-      view,
-      new THREE.Object3D(),
-      versions
-    );
+    const stLayer = new STLayer(view, new THREE.Object3D(), versions);
 
     Promise.all(promisesTileContentLoaded).then(() => {
+      shapeName.hidden = true;
+
       // STSCircle
       if (stsCircle != null) {
         stsCircle.dispose();
@@ -452,7 +295,8 @@ loadMultipleJSON([
   };
 
   selectSTShape.onchange = () => {
-    console.log(selectSTShape.selectedOptions[0].value);
+    shapeName.hidden = false;
+    shapeName.innerText = selectSTShape.selectedOptions[0].innerText;
     getShapesWithUi().forEach((element) => {
       if (element.stShape != null && element.stShape.displayed) {
         element.stShape.dispose();
