@@ -40,10 +40,6 @@ loadMultipleJSON([
   document.body.appendChild(viewDomElement);
   const view = new itowns.PlanarView(viewDomElement, extent);
 
-  // eslint-disable-next-line no-constant-condition
-  if ('RUN_MODE' == 'production')
-    loadingScreen(view, ['UD-VIZ', 'UDVIZ_VERSION']);
-
   // init scene 3D
   initScene(view.camera.camera3D, view.mainLoop.gfxEngine.renderer, view.scene);
 
@@ -65,18 +61,13 @@ loadMultipleJSON([
     })
   );
 
-  const isTextureFormat =
-    configs['elevation']['format'] == 'image/jpeg' ||
-    configs['elevation']['format'] == 'image/png';
   view.addLayer(
     new itowns.ElevationLayer(configs['elevation']['layer_name'], {
-      useColorTextureElevation: isTextureFormat,
-      colorTextureElevationMinZ: isTextureFormat
-        ? configs['elevation']['colorTextureElevationMinZ']
-        : null,
-      colorTextureElevationMaxZ: isTextureFormat
-        ? configs['elevation']['colorTextureElevationMaxZ']
-        : null,
+      useColorTextureElevation: true,
+      colorTextureElevationMinZ:
+        configs['elevation']['colorTextureElevationMinZ'],
+      colorTextureElevationMaxZ:
+        configs['elevation']['colorTextureElevationMaxZ'],
       source: new itowns.WMSSource({
         extent: extent,
         url: configs['elevation']['url'],
@@ -96,8 +87,6 @@ loadMultipleJSON([
   });
 
   // CREATE HTML
-  const ui = document.getElementById('sts_div');
-
   const selectDataset = document.getElementById('select_dataset');
   const getDataset = () => {
     switch (selectDataset.selectedOptions[0].value) {
@@ -152,8 +141,8 @@ loadMultipleJSON([
   const parabolaHeight = document.getElementById('parabola_height');
   const selectDateParabola = document.getElementById('parabola_year');
 
-  // CREATE 3DTILES
-  
+  // CREATE SHAPES AND 3DTILES
+
   const stsCircle = new STSCircle();
   const stsVector = new STSVector();
   const stsHelix = new STSHelix();
@@ -183,7 +172,6 @@ loadMultipleJSON([
       versions = [];
     }
     const c3dtilesConfigs = getDataset();
-    const temporalsWrappers = [];
     const promisesTileContentLoaded = [];
     c3dtilesConfigs.forEach((config) => {
       const isTemporal = !!config.dates;
@@ -213,16 +201,14 @@ loadMultipleJSON([
           })
         );
         if (isTemporal) {
-          temporalsWrappers.push(
-            new Temporal3DTilesLayerWrapper(c3DTilesLayer)
+          const temporalsWrapper = new Temporal3DTilesLayerWrapper(
+            c3DTilesLayer
           );
 
           if (date == Math.min(...datesJSON)) {
-            temporalsWrappers[temporalsWrappers.length - 1].styleDate =
-              date + 1;
+            temporalsWrapper.styleDate = date + 1;
           } else {
-            temporalsWrappers[temporalsWrappers.length - 1].styleDate =
-              date - 2;
+            temporalsWrapper.styleDate = date - 2;
           }
         }
         versions.push({ date: date, c3DTLayer: c3DTilesLayer });
