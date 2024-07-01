@@ -21,8 +21,8 @@
   },
   "homepage": "https://github.com/VCityTeam/UD-Demo-IMU-Spatio-Temporal#readme",
   "dependencies": {
-    "@ud-viz/extensions_3d_tiles_temporal": "file:../UD-Viz/packages/extensions_3d_tiles_temporal",
-    "@ud-viz/utils_browser": "file:../UD-Viz/packages/utils_browser",
+    "@ud-viz/extensions_3d_tiles_temporal": "4.3.0",
+    "@ud-viz/utils_browser": "4.3.0",
     "buffer": "^6.0.3",
     "chart.js": "^4.4.1",
     "cross-env": "7.0.3"
