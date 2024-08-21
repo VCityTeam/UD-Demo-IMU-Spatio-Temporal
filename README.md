@@ -1,5 +1,9 @@
 # Spatio Temporal
 
+[**Online demo**](https://projet.liris.cnrs.fr/vcity/permalink/demo-spatio-temporal-shapes.html)
+
+[**Docker**](https://github.com/VCityTeam/UD-Demo-IMU-Spatio-Temporal-docker)
+
 ## Installing and running the demo
 
 Clone the repo:
