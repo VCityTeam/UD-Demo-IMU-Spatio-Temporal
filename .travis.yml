@@ -1,0 +1,31 @@
+branches:
+  only:
+    - master
+
+os: linux
+dist: focal
+language: node_js
+node_js:
+  - 18
+
+before_install:
+  - npm i -g npm@7
+
+jobs:
+  include:
+    - stage: Checking dependencies
+      script:
+        - npm --version
+    - stage: Demo
+      script:
+        - npm install && npm run debug
+    - stage: 'Markdown link checks'
+      script:
+        - npm install --global remark-cli remark-validate-links
+        - remark -u validate-links .
+        - |
+          export FAILURE_THRESHOLD=0
+          export warnings=`remark -u validate-links . 2>&1 | grep warning | grep "Link to unknown" | wc -l`
+          if [ $warnings -gt $FAILURE_THRESHOLD ]; then
+            exit 1;
+          fi
