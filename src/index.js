@@ -21,7 +21,7 @@ loadMultipleJSON([
   'https://raw.githubusercontent.com/VCityTeam/UD-Viz/ae6d4430e371f387a6aff9bd3d69b886947bef88/examples/assets/config/crs.json',
   'https://raw.githubusercontent.com/VCityTeam/UD-Viz/ae6d4430e371f387a6aff9bd3d69b886947bef88/examples/assets/config/layer/3DTiles_temporal.json',
   'https://raw.githubusercontent.com/VCityTeam/UD-Viz/ae6d4430e371f387a6aff9bd3d69b886947bef88/examples/assets/config/layer/3DTiles_STS_data.json',
-  'https://raw.githubusercontent.com/VCityTeam/UD-Viz/ae6d4430e371f387a6aff9bd3d69b886947bef88/examples/assets/config/layer/base_maps.json',
+  'https://raw.githubusercontent.com/VCityTeam/UD-Viz/e3896d130e048e0c4fd517c34308d2ad355edbdd/examples/assets/config/layer/base_maps.json',
   'https://raw.githubusercontent.com/VCityTeam/UD-Viz/ae6d4430e371f387a6aff9bd3d69b886947bef88/examples/assets/config/layer/elevation.json',
 ]).then((configs) => {
   proj4.default.defs(configs['crs'][0].name, configs['crs'][0].transform);
