@@ -44,18 +44,18 @@ loadMultipleJSON([
   initScene(view.camera.camera3D, view.mainLoop.gfxEngine.renderer, view.scene);
 
   view.addLayer(
-    new itowns.ColorLayer(configs['base_maps'][0]['name'], {
+    new itowns.ColorLayer(configs['base_maps'][1]['name'], {
       updateStrategy: {
         type: itowns.STRATEGY_DICHOTOMY,
         options: {},
       },
       source: new itowns.WMSSource({
         extent: extent,
-        name: configs['base_maps'][0].source['name'],
-        url: configs['base_maps'][0].source['url'],
-        version: configs['base_maps'][0].source['version'],
+        name: configs['base_maps'][1].source['name'],
+        url: configs['base_maps'][1].source['url'],
+        version: configs['base_maps'][1].source['version'],
         crs: extent.crs,
-        format: configs['base_maps'][0].source['format'],
+        format: configs['base_maps'][1].source['format'],
       }),
       transparent: true,
     })
